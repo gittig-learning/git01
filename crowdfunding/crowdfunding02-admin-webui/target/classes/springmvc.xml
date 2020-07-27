@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--组件扫描器-->
+    <context:component-scan base-package="org.example.mvc"/>
+    <!--注解驱动-->
+    <mvc:annotation-driven/>
+    <!--defaultservlet帮助dispatcherservlet处理静态资源请求的处理-->
+    <mvc:default-servlet-handler/>
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--配置拦截器-->
+<!--    <mvc:interceptors>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**"/>//url拦截的地址时自定义的-->
+<!--            <bean class="拦截器全限定名称"/>-->
+<!--        </mvc:interceptor>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**">-->
+<!--            <bean class="拦截器全限定名称">-->
+<!--        </mvc:interceptor>-->
+<!--    </mvc:interceptors>-->
+    <mvc:view-controller path="/admin/to/login/page" view-name="admin-login"/>
+    <mvc:view-controller path="/admin/to/main/page" view-name="admin-main"/>
+    <mvc:view-controller path="/admin/to/add/page" view-name="admin-add"/>
+    <mvc:view-controller path="/role/to/page" view-name="role-page"/>
+    <mvc:view-controller path="/menu/to/page" view-name="menu-page"/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/admin/to/login/page"/>
+            <mvc:exclude-mapping path="/admin/logout"/>
+            <mvc:exclude-mapping path="/admin/login"/>
+<!--            <mvc:exclude-mapping path="/WEB-INF/view/admin-login.jsp"/>-->
+            <mvc:exclude-mapping path="/img/*"/>
+            <mvc:exclude-mapping path="/index.jsp"/>
+            <bean class="org.example.mvc.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
